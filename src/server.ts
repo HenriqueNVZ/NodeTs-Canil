@@ -9,7 +9,12 @@ import mustache from 'mustache-express';
 //módulo nativo do Node.js para manipular caminhos de arquivos e diretórios.
 import path from 'path';
 
+import { fileURLToPath } from 'url';
+
 import mainRoutes from './routes/index.ts';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //Carrega o arquivo .env do projeto e carrega váriaveis em process.env
 dotenv.config()
@@ -28,8 +33,12 @@ server.use(express.static(path.join(__dirname,'../public')))
 server.use(mainRoutes)
 
 server.use((req,res) => {
-    res.send('home')
+    res.render('Pages/404');
 })
 
 //ROTAS
-server.listen(process.env.PORT)
+const PORT = process.env.PORT;
+
+server.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+});
